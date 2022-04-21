@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Start Add Project -->
+<section id="add-project" style="background-color: #a3d7fa;">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col">
+                <h2>Add Project</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    {{ field.label }}
+                    {{ field }}
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Add Project</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <path fill="#ffffff" fill-opacity="1"
+            d="M0,64L18.5,74.7C36.9,85,74,107,111,112C147.7,117,185,107,222,128C258.5,149,295,203,332,229.3C369.2,256,406,256,443,240C480,224,517,192,554,149.3C590.8,107,628,53,665,74.7C701.5,96,738,192,775,208C812.3,224,849,160,886,144C923.1,128,960,160,997,149.3C1033.8,139,1071,85,1108,90.7C1144.6,96,1182,160,1218,192C1255.4,224,1292,224,1329,197.3C1366.2,171,1403,117,1422,90.7L1440,64L1440,320L1421.5,320C1403.1,320,1366,320,1329,320C1292.3,320,1255,320,1218,320C1181.5,320,1145,320,1108,320C1070.8,320,1034,320,997,320C960,320,923,320,886,320C849.2,320,812,320,775,320C738.5,320,702,320,665,320C627.7,320,591,320,554,320C516.9,320,480,320,443,320C406.2,320,369,320,332,320C295.4,320,258,320,222,320C184.6,320,148,320,111,320C73.8,320,37,320,18,320L0,320Z">
+        </path>
+    </svg>
+</section>
+<!-- End Add Project -->
+{% endblock content %}
