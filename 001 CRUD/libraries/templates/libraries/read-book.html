@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row-md-12">
+        <div class="col">
+            <div class="card" style="width: 30rem;">
+                <img src="{{ book.featured_image.url }}" class="card-img-top" alt="{{ book.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">{{ book.description }}</p>
+                    <p class="card-text">
+                        {% for genre in book.genres.all %}
+                        <span class="p-1 me-2 border border-primary">{{ genre }}</span>
+                        {% endfor %}
+                    </p>
+                    <p class="text-start">
+                        <a href="{% url 'home' %}" class="btn btn-danger">Go Back</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

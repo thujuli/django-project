@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Libraries | Thu Juli</title>
+
+    <!-- Icon Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+    <!-- CSS Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+    <!-- My Style.css -->
+</head>
+
+<body>
+    <div class="container-fluid">
+        <header
+            class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+            <div class="col-md-11 text-end">
+                <a href="{% url 'create-book' %}" type="button" class="btn btn-outline-success me-2">Add Books</a>
+                <button type="button" class="btn btn-primary">Login/Sign Up</button>
+            </div>
+        </header>
+    </div>
+    {% block content %}
+
+    {% endblock content %}
+    <footer class="bg-primary text-white text-center pb-3">
+        <p class="pt-3">Created with <i class="bi bi-suit-heart-fill text-danger"></i> by <a class="text-white fw-bold" href="https://github.com/thujuli">Thu Juli</a></p>
+    </footer> 
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+</body>
+
+</html>
