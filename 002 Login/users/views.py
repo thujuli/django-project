@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 # from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
@@ -31,6 +31,7 @@ def loginUser(request):
     return render(request, 'users/login-user.html')
 
 
+@login_required(login_url='login')
 def createUser(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -50,3 +51,9 @@ def createUser(request):
 def profileUser(request):
     context = {}
     return render(request, 'users/profile.html', context)
+
+
+@login_required(login_url='login')
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
