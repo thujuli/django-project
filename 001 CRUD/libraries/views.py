@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from .models import Book
 from .forms import BookForm
 
@@ -24,6 +25,7 @@ def createBook(request):
         form = BookForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Successfully Added a New Book')
             return redirect('home')
     else:
         form = BookForm()
@@ -31,4 +33,23 @@ def createBook(request):
             'form': form
         }
 
-    return render(request, 'libraries/create-book.html', context)
+    return render(request, 'libraries/create_update-book.html', context)
+
+
+def updateBook(request, pk):
+    book = Book.objects.get(id=pk)
+
+    if request.method == "POST":
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Successfully Updating the Book')
+            return redirect('home')
+    else:
+        form = BookForm(instance=book)
+        context = {
+            'form': form,
+            'book': book
+        }
+
+    return render(request, 'libraries/create_update-book.html', context)

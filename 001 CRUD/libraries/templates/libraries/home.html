@@ -7,6 +7,19 @@
             <h1 class="text-primary">List Manga</h1>
         </div>
     </div>
+    <div class="row justify-content-center">
+        <div class="col-md-10 text-center">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        {% if message.tags %}
+                            <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
     <div class="row justify-content-center m-3">
         <div class="col-md-10">
             <table class="table table-hover">
@@ -15,6 +28,7 @@
                         <th>Title</th>
                         <th>Author</th>
                         <th>Genre</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,12 +41,13 @@
                             <span class="p-1 me-2 border border-primary">{{ genre }}</span>
                             {% endfor %}
                         </td>
+                        <td><a href="{% url 'update-book' book.id %}" class="btn btn-success">Edit</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
-    
+
 </div>
 {% endblock content %}
