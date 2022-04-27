@@ -22,18 +22,22 @@
     <div class="container-fluid">
         <header
             class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-            <div class="col-md-11 text-end">
-                <a href="{% url 'create-book' %}" type="button" class="btn btn-outline-success me-2">Add Books</a>
-                <button type="button" class="btn btn-primary">Login/Sign Up</button>
+            <div class="col text-end">
+                <a href="{% url 'create-book' %}" type="button" class="btn btn-primary">Add Books</a>
             </div>
         </header>
     </div>
     {% block content %}
 
     {% endblock content %}
-    <footer class="bg-primary text-white text-center pb-3">
-        <p class="pt-3">Created with <i class="bi bi-suit-heart-fill text-danger"></i> by <a class="text-white fw-bold" href="https://github.com/thujuli">Thu Juli</a></p>
+    <footer class="bg-primary text-white text-center pb-3 container-fluid">
+        <div class="row">
+            <div class="col">
+                <p class="pt-3">Created with <i class="bi bi-suit-heart-fill text-danger"></i> by <a class="text-white fw-bold" href="https://github.com/thujuli">Thu Juli</a></p>
+            </div>
+        </div>
     </footer> 
+    <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.js' %}"></script>
 </body>
 

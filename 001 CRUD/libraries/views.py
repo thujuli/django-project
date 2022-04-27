@@ -53,3 +53,9 @@ def updateBook(request, pk):
         }
 
     return render(request, 'libraries/create_update-book.html', context)
+
+
+def deleteBook(request, pk):
+    book = Book.objects.get(id=pk)
+    book.delete()
+    return redirect('home')
