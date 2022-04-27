@@ -58,4 +58,5 @@ def updateBook(request, pk):
 def deleteBook(request, pk):
     book = Book.objects.get(id=pk)
     book.delete()
+    messages.error(request, 'Successfully Delete Book')
     return redirect('home')
