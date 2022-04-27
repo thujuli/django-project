@@ -5,13 +5,15 @@
     <div class="row justify-content-center mb-3">
         <div class="col-md-6">
             <div class="card" style="width: 30rem;">
-                <img src="{{ book.featured_image.url }}" class="card-img-top" alt="{{ book.title }}">
+                <img src="{{ book.featured_image.url }}" class="card-img-top img-fluid" alt="{{ book.title }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ book.title }}</h5>
                     <p class="card-text">{{ book.description }}</p>
                     <p class="card-text">
                         {% for genre in book.genres.all %}
-                        <span class="p-1 me-2 border border-primary">{{ genre }}</span>
+                        <div class="badge bg-primary text-wrap ">
+                            {{ genre }}
+                        </div>
                         {% endfor %}
                     </p>
                     <p class="text-start">
