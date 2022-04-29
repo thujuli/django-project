@@ -4,10 +4,13 @@ from django.contrib.auth import authenticate, login, logout
 # from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
+from .models import Profile
 
 
 def home(request):
-    return render(request, 'users/home.html')
+    profiles = Profile.objects.all()
+    context = {'profiles': profiles}
+    return render(request, 'users/home.html', context)
 
 
 def loginUser(request):
@@ -49,7 +52,8 @@ def createUser(request):
 
 @login_required(login_url='login')
 def profileUser(request):
-    context = {}
+    profiles = Profile.objects.all()
+    context = {'profiles': profiles}
     return render(request, 'users/profile.html', context)
 
 
