@@ -12,14 +12,12 @@
 
 <body>
     {% include 'snippet/navbar.html' %}
-
     <div class="container shadow p-3 mb-5 bg-body rounded">
+        {% include 'snippet/category-map.html' %}
         {% block content %}
-        
         {% endblock content %}
     </div>
-    
-
+    {% include 'snippet/footer.html' %}
     {% include 'snippet/scripts.html' %}
 </body>
 
