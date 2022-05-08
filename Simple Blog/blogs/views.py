@@ -1,46 +1,18 @@
 from django.shortcuts import render
-from .models import Post
+from django.views.generic import ListView, DetailView
+from .models import Article
+# Create your views here.
 
 
-def categoryMap(request):
-    posts = Post.objects.all()
-    categories = Post.objects.values('category').distinct()
-    context = {
-        'posts': posts,
-        'categories': categories
-    }
-
-    return render(request, 'snippets/category-map.html', context)
+class ArticleListView(ListView):
+    model = Article
+    template_name = 'blogs/article_list.html'
+    context_object_name = 'article_list'
+    paginate_by = 3
+    ordering = ['-published']
 
 
-def posts(request):
-    posts = Post.objects.all()
-    categories = Post.objects.values('category').distinct()
-    context = {
-        'posts': posts,
-        'categories': categories
-    }
-
-    return render(request, 'blogs/posts.html', context)
-
-
-def categoryPost(request, categoryInput):
-    posts = Post.objects.filter(category=categoryInput)
-    categories = Post.objects.values('category').distinct()
-    context = {
-        'posts': posts,
-        'categories': categories
-    }
-
-    return render(request, 'blogs/category-post.html', context)
-
-
-def detailPost(request, slugInput):
-    post = Post.objects.get(slug=slugInput)
-    categories = Post.objects.values('category').distinct()
-    context = {
-        'posts': posts,
-        'categories': categories
-    }
-
-    return render(request, 'blogs/detail-post.html', context)
+class ArticleDetailView(DetailView):
+    model = Article
+    template_name = 'blogs/article_detail.html'
+    context_object_name = 'article'

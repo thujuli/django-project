@@ -1,12 +1,5 @@
-from django.shortcuts import render
-from blogs.models import Post
+from django.views.generic.base import TemplateView
 
 
-def index(request):
-    posts = Post.objects.all()
-    categories = Post.objects.values('category').distinct()
-    context = {
-        'posts': posts,
-        'categories': categories
-    }
-    return render(request, 'index.html', context)
+class HomeTemplateView(TemplateView):
+    template_name = 'index.html'

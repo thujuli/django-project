@@ -1,13 +1,14 @@
 from django.contrib import admin
-from .models import Post
+from .models import Article
+# Register your models here.
 
 
-class PostAdmin(admin.ModelAdmin):
+class ArticleAdmin(admin.ModelAdmin):
     readonly_fields = (
         'slug',
-        'publish',
+        'published',
         'updated',
     )
 
 
-admin.site.register(Post, PostAdmin)
+admin.site.register(Article, ArticleAdmin)
