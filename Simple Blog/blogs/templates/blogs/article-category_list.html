@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Article List
+Article Category List
 {% endblock title %}
 
 {% block content %}
@@ -12,7 +12,7 @@ Article List
             <ul class="pagination">
                 {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="{% url 'blogs:list' page_obj.previous_page_number %}">Previous</a>
+                    <a class="page-link" href="{% url 'blogs:category' category page_obj.previous_page_number %}">Previous</a>
                 </li>
                 {% else %}
                 <li class="page-item disabled">
@@ -26,13 +26,13 @@ Article List
                     <span class="page-link">{{ page }}</span>
                 </li>
                 {% else %}
-                <li class="page-item"><a class="page-link" href="{% url 'blogs:list' page %}">{{ page }}</a></li>
+                <li class="page-item"><a class="page-link" href="{% url 'blogs:category' category page %}">{{ page }}</a></li>
                 {% endif %}
                 {% endfor %}
 
                 {% if page_obj.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="{% url 'blogs:list' page_obj.next_page_number %}">Next</a>
+                    <a class="page-link" href="{% url 'blogs:category' category page_obj.next_page_number %}">Next</a>
                 </li>
                 {% else %}
                 <li class="page-item disabled">
