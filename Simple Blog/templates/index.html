@@ -4,5 +4,20 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>Testing</h1>
+<div class="row justify-content-center">
+    {% for article in article_list %}
+    <div class="col-md-6">
+        <div class="card border-info mb-3">
+            <div class="card-header bg-transparent border-info">{{ article.category|upper }}</div>
+            <div class="card-body text-dark">
+                <h5 class="card-title">{{ article.title|title }}</h5>
+                <p class="card-text">{{ article.content|truncatewords:25 }}</p>
+            </div>
+            <div class="card-footer bg-transparent border-info">
+                <a href="{% url 'blogs:detail' article.slug %}" class="btn btn-info">Detail</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock content %}

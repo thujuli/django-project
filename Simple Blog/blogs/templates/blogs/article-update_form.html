@@ -8,8 +8,15 @@ Article Update Form
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
-        <h2 class="text-center">Article Form</h2>
-        {% crispy form %}
+        <h2 class="text-center">Article Update Form</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="mt-2">
+                <button type="Edit" class="btn btn-warning">Submit</button>
+                <a href="{% url 'blogs:manage' %}" class="btn btn-danger">Back</a>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock content %}

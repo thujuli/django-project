@@ -6,6 +6,22 @@ from .forms import ArticleForm
 # Create your views here.
 
 
+class ArticleLastestEachCategory:
+    model = Article
+
+    def get_lastest_article(self, *args, **kwargs):
+        category_list = self.model.objects.values_list(
+            'category', flat=True).distinct()
+        queryset = []
+
+        for category in category_list:
+            article = self.model.objects.filter(
+                category=category).latest('published')
+            queryset.append(article)
+
+        return queryset
+
+
 class ArticleUpdateFormView(UpdateView):
     template_name = 'blogs/article-update_form.html'
     model = Article
