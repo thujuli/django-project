@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Article Delete
+{% endblock title %}
+
+{% block content %}
+<h1>Article Confirm Delete</h1>
+<p>You want to delete this article:</p>
+<h3>{{article.title}}</h3>
+<p>{{article.published}}</p>
+<form method='POST'>
+    {% csrf_token %}
+    <button type="submit" class="btn btn-outline-primary">Yes</button>
+    <a class="btn btn-outline-danger" href="{% url 'blogs:manage' %}">No</a>
+</form>
+{% endblock content %}

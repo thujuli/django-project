@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    {{ article.title }}
+{{ article.title }}
 {% endblock title %}
 
 {% block content %}
@@ -12,6 +12,19 @@
         <p>{{ article.content }}</p>
         <p class="border-bottom">{{ article.published }}</p>
     </div>
-    <div class="col-sm"></div>
-</div>
+    <div class="col-sm">
+        <h3>Related Article</h3>
+        <ul class="list-group list-group-flush">
+            {% for article in related_article %}
+            <li class="list-group-item">
+                <a class="text-decoration-none"
+                    href="{% url 'blogs:detail' article.slug  %}">{{ article.title }}</a>
+            </li>
+            {% endfor %}
+            <li class="list-group-item">
+                <a class="text-decoration-none" href="{% url 'blogs:category' article.category 1 %}">More Related Article</a>
+            </li>
+        </ul>
+    </div>
+</div> 
 {% endblock content %}

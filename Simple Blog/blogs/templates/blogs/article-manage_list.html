@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Manage Article
+{% endblock title %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="text-center">Manage Article</h2>
+        <table class="table table-striped ">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Published</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for article in article_list %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.category }}</td>
+                    <td>{{ article.published|date }}</td>
+                    <td>
+                        <a href="{% url 'blogs:update' article.id %}" type="button" class="btn btn-warning">Edit</a>
+                        <a href="{% url 'blogs:delete' article.id %}" type="button" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="d-grid mt-2 mb-2">
+            <a href="{% url 'blogs:create' %}" type="button" class="btn btn-primary">Create</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
