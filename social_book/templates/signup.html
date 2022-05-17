@@ -6,5 +6,15 @@ Signup
 
 
 {% block content %}
-<h1>Testing</h1>
+    {% for message in messages %}
+    <div>
+        <p>{{ message }}</p>
+    </div>
+    {% endfor %}
+    <form method="post">
+        {% csrf_token %} 
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
 {% endblock content %}
