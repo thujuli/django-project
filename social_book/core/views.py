@@ -4,10 +4,43 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Profile
-from .forms import CustomUserCreationForm
-
+from .forms import CustomUserCreationForm, ProfileForm
 from django.contrib.auth.forms import AuthenticationForm
 # Create your views here.
+
+
+@login_required(login_url='login')
+def settings(request):
+    user_profile = Profile.objects.get(user=request.user)
+    form = ProfileForm(instance=user_profile)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES,
+                           instance=user_profile)
+
+        # handling image from user upload (None)
+        if request.FILES.get('profile_image') == None:
+            profile_image = user_profile.profile_image
+
+        # handling image from user when uploaded
+        if request.FILES.get('profile_image') != None:
+            profile_image = request.FILES.get('profile_image')
+
+        bio = request.POST.get('bio')
+        location = request.POST.get('location')
+        if form.is_valid():
+            user_profile.profile_image = profile_image
+            user_profile.bio = bio
+            user_profile.location = location
+            user_profile.save()
+
+        return redirect('settings')  # index view
+
+    context = {
+        'form': form,
+        'user_profile': user_profile,
+    }
+    return render(request, 'settings.html', context)
 
 
 @login_required(login_url='login')
@@ -17,6 +50,9 @@ def logoutView(request):
 
 
 def signin(request):
+    if request.user.is_authenticated:
+        return redirect('settings')
+
     form = AuthenticationForm
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -25,7 +61,7 @@ def signin(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('signup')  # change to settings url
+            return redirect('settings')
         else:
             messages.info(
                 request, 'You have entered an invalid username or password')
@@ -34,6 +70,9 @@ def signin(request):
 
 
 def signup(request):
+    if request.user.is_authenticated:
+        return redirect('settings')
+
     form = CustomUserCreationForm
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -64,7 +103,7 @@ def signup(request):
                 user = authenticate(username=username, password=password1)
                 if user is not None:
                     login(request, user)
-                    return redirect('signup')  # change to settings url
+                    return redirect('settings')
                 else:
                     messages.info(
                         request, 'Something went wrong please try again')
