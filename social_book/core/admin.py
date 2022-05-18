@@ -1,5 +1,11 @@
 from django.contrib import admin
-from .models import Profile
+from .models import Profile, Post
 # Register your models here.
 
-admin.site.register(Profile)
+
+class ProfileAdmin(admin.ModelAdmin):
+    readonly_fields = ('id_user',)
+
+
+admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Post)

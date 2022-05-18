@@ -10,6 +10,12 @@ from django.contrib.auth.forms import AuthenticationForm
 
 
 @login_required(login_url='login')
+def index(request):
+
+    return render(request, 'index.html')
+
+
+@login_required(login_url='login')
 def settings(request):
     user_profile = Profile.objects.get(user=request.user)
     form = ProfileForm(instance=user_profile)
@@ -34,7 +40,7 @@ def settings(request):
             user_profile.location = location
             user_profile.save()
 
-        return redirect('settings')  # index view
+        return redirect('index')
 
     context = {
         'form': form,
