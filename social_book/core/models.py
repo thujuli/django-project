@@ -4,6 +4,13 @@ import uuid
 
 
 # Create your models here.
+class FollowCount(models.Model):
+    follower = models.CharField(max_length=255)
+    user = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.user
+
 
 class LikePost(models.Model):
     post_id = models.CharField(max_length=255)
@@ -28,7 +35,7 @@ class Post(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    id_user = models.IntegerField(editable=False)
+    id_user = models.IntegerField()
     profile_image = models.ImageField(
         upload_to='profile_images/', default='default.jpg')
     bio = models.TextField(blank=True, null=True)

@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Post, LikePost
+from .models import Profile, Post, LikePost, FollowCount
 from .forms import CustomUserCreationForm, ProfileForm, PostForm
 from django.contrib.auth.forms import AuthenticationForm
 # Create your views here.
@@ -28,13 +28,50 @@ def profile(request, pk):
     user_post = Post.objects.filter(user=pk)
     user_post_length = len(user_post)
 
+    follower = request.user.username
+    user = pk
+
+    if FollowCount.objects.filter(follower=follower, user=user):
+        button_text = 'Unfollow'
+    else:
+        button_text = 'Follow'
+
+    user_followers = len(FollowCount.objects.filter(follower=follower))
+    user_following = len(FollowCount.objects.filter(follower=user))
+
     context = {
+        'user_object': user_object,
         'profile': profile,
         'user_post': user_post,
         'user_post_length': user_post_length,
+        'user_followers': user_followers,
+        'user_following': user_following,
+        'button_text': button_text,
 
     }
     return render(request, 'profile.html', context)
+
+
+@login_required(login_url='login')
+def follow(request):
+
+    if request.method == 'POST':
+        follower = request.POST.get('follower')
+        user = request.POST.get('user')
+        follower_filter = FollowCount.objects.filter(
+            follower=follower, user=user).first()
+
+        if follower_filter == None:
+            new_follower = FollowCount.objects.create(
+                follower=follower, user=user)
+            new_follower.save()
+            return redirect(reverse('profile', kwargs={'pk': user}))
+        else:
+            follower_filter.delete()
+            return redirect(reverse('profile', kwargs={'pk': user}))
+            # return redirect('profile'+user)
+
+    return redirect('index')
 
 
 @login_required(login_url='login')
@@ -125,7 +162,7 @@ def logoutView(request):
 
 def signin(request):
     if request.user.is_authenticated:
-        return redirect('settings')
+        return redirect('setting')
 
     form = AuthenticationForm
     if request.method == 'POST':
@@ -135,7 +172,7 @@ def signin(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('settings')
+            return redirect('setting')
         else:
             messages.info(
                 request, 'You have entered an invalid username or password')
@@ -145,7 +182,7 @@ def signin(request):
 
 def signup(request):
     if request.user.is_authenticated:
-        return redirect('settings')
+        return redirect('setting')
 
     form = CustomUserCreationForm
     if request.method == 'POST':
@@ -168,7 +205,7 @@ def signup(request):
                 user.save()
 
                 # create new profile
-                model_user = User.objects.filter(username=username)
+                model_user = User.objects.get(username=username)
                 new_profile = Profile.objects.create(
                     user=model_user, id_user=model_user.id)
                 new_profile.save()
@@ -177,7 +214,7 @@ def signup(request):
                 user = authenticate(username=username, password=password1)
                 if user is not None:
                     login(request, user)
-                    return redirect('settings')
+                    return redirect('setting')
                 else:
                     messages.info(
                         request, 'Something went wrong please try again')
