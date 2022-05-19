@@ -36,8 +36,8 @@ def profile(request, pk):
     else:
         button_text = 'Follow'
 
-    user_followers = len(FollowCount.objects.filter(follower=follower))
-    user_following = len(FollowCount.objects.filter(follower=user))
+    user_followers = len(FollowCount.objects.filter(user=pk))
+    user_following = len(FollowCount.objects.filter(follower=pk))
 
     context = {
         'user_object': user_object,
