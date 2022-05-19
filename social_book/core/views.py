@@ -22,6 +22,22 @@ def index(request):
 
 
 @login_required(login_url='login')
+def profile(request, pk):
+    user_object = User.objects.get(username=pk)
+    profile = Profile.objects.get(user=user_object)
+    user_post = Post.objects.filter(user=pk)
+    user_post_length = len(user_post)
+
+    context = {
+        'profile': profile,
+        'user_post': user_post,
+        'user_post_length': user_post_length,
+
+    }
+    return render(request, 'profile.html', context)
+
+
+@login_required(login_url='login')
 def likePost(request):
     # get data for models LikePost
     post_id = request.GET.get('post_id')
@@ -68,7 +84,7 @@ def upload(request):
 
 
 @login_required(login_url='login')
-def settings(request):
+def setting(request):
     user_profile = Profile.objects.get(user=request.user)
     form = ProfileForm(instance=user_profile)
 
@@ -98,7 +114,7 @@ def settings(request):
         'form': form,
         'user_profile': user_profile,
     }
-    return render(request, 'settings.html', context)
+    return render(request, 'setting.html', context)
 
 
 @login_required(login_url='login')

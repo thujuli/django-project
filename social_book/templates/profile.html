@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ profile.user }}
+{% endblock title %}
+
+
+{% block content %}
+<div class="container" >
+    <div class="left-bar">
+        <div class="col">
+            <img src="{{ profile.profile_image.url }}" style="width: 250px;">
+            <h3>{{ profile.bio }}</h3>
+            <h4>{{ profile.location }}</h4>
+        </div>
+    </div>
+
+    <div class="right-bar">
+        <h2>List Post</h2>
+        {% for post in user_post %}
+        <p>
+            <img src="{{ post.image.url }}" style="width: 100px;">
+            {{ post.caption }}
+        </p>
+        <hr>
+        {% endfor %}
+        <h4>User Post {{ user_post_length }}</h4>
+    </div>
+</div>
+{% endblock content %}
