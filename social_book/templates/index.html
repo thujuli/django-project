@@ -7,11 +7,22 @@ Social Book
 
 {% block content %}
 <div class="container" >
-    <div class="right-bar">
-        <p>right</p>
-    </div>
     <div class="left-bar">
-        <p>left</p>
+        <div class="col">
+            {% for post in user_post %}
+            <img src="{{ post.image.url }}" style="width: 250px;" >
+            <p>{{ post.caption }}</p>
+            <p><a href="">Like!</a></p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="right-bar">
+        <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
     </div>
 </div>
 {% endblock content %}

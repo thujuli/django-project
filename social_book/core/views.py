@@ -3,16 +3,40 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Profile
-from .forms import CustomUserCreationForm, ProfileForm
+from .models import Profile, Post
+from .forms import CustomUserCreationForm, ProfileForm, PostForm
 from django.contrib.auth.forms import AuthenticationForm
 # Create your views here.
 
 
 @login_required(login_url='login')
 def index(request):
+    form = PostForm
+    user_post = Post.objects.filter(user=request.user.username)
 
-    return render(request, 'index.html')
+    context = {
+        'form': form,
+        'user_post': user_post
+    }
+    return render(request, 'index.html', context)
+
+
+@login_required(login_url='login')
+def upload(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+
+        image = request.FILES.get('image')
+        caption = request.POST.get('caption')
+        user = request.user.username
+
+        if form.is_valid():
+            new_post = Post.objects.create(
+                user=user, image=image, caption=caption)
+            new_post.save()
+            return redirect('index')
+    else:
+        return redirect('index')
 
 
 @login_required(login_url='login')

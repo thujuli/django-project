@@ -11,7 +11,10 @@ class Post(models.Model):
     image = models.ImageField(upload_to='feed_images')
     caption = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
-    total_likes = models.IntegerField()
+    total_likes = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.user
 
 
 class Profile(models.Model):
