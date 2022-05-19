@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Post
+from .models import Profile, Post, LikePost
 from .forms import CustomUserCreationForm, ProfileForm, PostForm
 from django.contrib.auth.forms import AuthenticationForm
 # Create your views here.
@@ -19,6 +19,34 @@ def index(request):
         'user_post': user_post
     }
     return render(request, 'index.html', context)
+
+
+@login_required(login_url='login')
+def likePost(request):
+    # get data for models LikePost
+    post_id = request.GET.get('post_id')
+    username = request.user.username
+
+    # get models for update data total_likes
+    post = Post.objects.get(id=post_id)
+
+    # select table in models LikePost to update logic
+    like_filter = LikePost.objects.filter(
+        post_id=post_id, username=username).first()
+
+    # update logic total_likes in Post
+    if like_filter is None:
+        new_like = LikePost.objects.create(post_id=post_id, username=username)
+        new_like.save()
+        post.total_likes += 1
+        post.save()
+        return redirect('index')
+
+    else:
+        like_filter.delete()
+        post.total_likes -= 1
+        post.save()
+        return redirect('index')
 
 
 @login_required(login_url='login')

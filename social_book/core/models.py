@@ -4,6 +4,15 @@ import uuid
 
 
 # Create your models here.
+
+class LikePost(models.Model):
+    post_id = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.username
+
+
 class Post(models.Model):
     id = models.UUIDField(default=uuid.uuid4,
                           primary_key=True, unique=True, editable=False)

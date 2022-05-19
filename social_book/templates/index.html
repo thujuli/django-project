@@ -12,7 +12,7 @@ Social Book
             {% for post in user_post %}
             <img src="{{ post.image.url }}" style="width: 250px;" >
             <p>{{ post.caption }}</p>
-            <p><a href="">Like!</a></p>
+            <p><a href="{% url 'like-post' %}?post_id={{post.id}}">Like!</a> | {{ post.total_likes }} People Likes</p>
             {% endfor %}
         </div>
     </div>
