@@ -10,9 +10,11 @@ Social Book
     <div class="left-bar">
         <div class="col">
             {% for post in user_post %}
-            <img src="{{ post.image.url }}" style="width: 250px;" >
+            <a href="{{ post.image.url }}">
+                <img src="{{ post.image.url }}" style="width: 250px;" >
+            </a>
             <p>{{ post.caption }}</p>
-            <p><a href="{% url 'like-post' %}?post_id={{post.id}}">Like!</a> | {{ post.total_likes }} People Likes</p>
+            <p><a href="{% url 'like-post' %}?post_id={{post.id}}">Like!</a> | {{ post.total_likes }} People Likes | <a href="{{ post.image.url }}" download>Download</a></p>
             {% endfor %}
         </div>
     </div>
