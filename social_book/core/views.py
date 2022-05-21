@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Profile, Post, LikePost, FollowCount
-from .forms import CustomUserCreationForm, ProfileForm, PostForm
+from .forms import CustomUserCreationForm, ProfileForm, PostForm, SearchPeopleForm
 from django.contrib.auth.forms import AuthenticationForm
 from itertools import chain
 
@@ -13,7 +13,8 @@ from itertools import chain
 
 @login_required(login_url='login')
 def index(request):
-    form = PostForm
+    form_post = PostForm
+    search_form = SearchPeopleForm
     user_following_list = []
     feed = []
 
@@ -31,10 +32,32 @@ def index(request):
     feed_list = list(chain(*feed))
 
     context = {
-        'form': form,
+        'search_form': search_form,
+        'form_post': form_post,
         'user_post': feed_list
     }
     return render(request, 'index.html', context)
+
+
+@login_required(login_url='login')
+def search(request):
+
+    if request.method == 'POST':
+        search_user = request.POST.get('search')
+        username_profile = User.objects.filter(username__icontains=search_user)
+        username_list = []
+        profile = []
+
+        for usernames in username_profile:
+            username_list.append(usernames)
+
+        for profiles in username_list:
+            profile_lists = Profile.objects.filter(user=profiles)
+            profile.append(profile_lists)
+
+        profile_list = list(chain(*profile))
+
+    return render(request, 'search.html', {'profile_list': profile_list})
 
 
 @login_required(login_url='login')

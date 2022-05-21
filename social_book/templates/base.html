@@ -16,7 +16,7 @@
 <body>
     <nav>
         <ul>
-            <li><a href="">Account</a>
+            <li><a href="{% url 'index' %}">Account</a>
                 <ul>
                     {% if user.is_authenticated %}
                     <li><a href="{% url 'setting' %}">Setting</a></li>

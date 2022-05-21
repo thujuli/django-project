@@ -20,9 +20,17 @@ Social Book
     </div>
 
     <div class="right-bar">
-        <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+
+        <form action="{% url 'search' %}" method="post" enctype="multipart/form-data" style="border: 1px solid black;">
+            <h2>Search People</h2>
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ search_form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+
+        <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data" style="border: 1px solid black;">
+            {% csrf_token %}
+            {{ form_post.as_p }}
             <button type="submit">Submit</button>
         </form>
     </div>

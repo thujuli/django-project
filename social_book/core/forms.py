@@ -5,6 +5,10 @@ from django import forms
 from .models import Profile, Post
 
 
+class SearchPeopleForm(forms.Form):
+    search = forms.CharField(max_length=255)
+
+
 class PostForm(ModelForm):
     class Meta:
         model = Post
