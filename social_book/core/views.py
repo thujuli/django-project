@@ -6,17 +6,33 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile, Post, LikePost, FollowCount
 from .forms import CustomUserCreationForm, ProfileForm, PostForm
 from django.contrib.auth.forms import AuthenticationForm
+from itertools import chain
+
 # Create your views here.
 
 
 @login_required(login_url='login')
 def index(request):
     form = PostForm
-    user_post = Post.objects.filter(user=request.user.username)
+    user_following_list = []
+    feed = []
+
+    # get following list
+    following_list = FollowCount.objects.filter(follower=request.user.username)
+    for users in following_list:
+        user_following_list.append(users.user)
+
+    # get feed list
+    for username in user_following_list:
+        feed_list = Post.objects.filter(user=username)
+        feed.append(feed_list)
+
+    # list a objects
+    feed_list = list(chain(*feed))
 
     context = {
         'form': form,
-        'user_post': user_post
+        'user_post': feed_list
     }
     return render(request, 'index.html', context)
 
