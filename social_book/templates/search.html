@@ -12,7 +12,7 @@ Search People
         <a href="{{ profile.profile_image.url }}">
             <img src="{{ profile.profile_image.url }}" style="width: 250px;">
         </a>
-        <h3>{{ profile.user }}</h3>
+        <h3><a href="{% url 'profile' profile.user %}">{{ profile.user }}</a></h3>
         <p><strong>{{ profile.location }}</strong> | {{ profile.bio }}</p>
     </div>
     {% endfor %}

@@ -28,6 +28,15 @@ class CustomUserCreationForm(UserCreationForm):
             'password2',
         )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update(
+                {
+                    'class': 'bg-gray-200 mb-2 shadow-none  dark:bg-gray-800',
+                    'placeholder': self.fields[field].label
+                })
+
 
 class ProfileForm(ModelForm):
     class Meta:

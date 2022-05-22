@@ -223,7 +223,7 @@ def signup(request):
     if request.user.is_authenticated:
         return redirect('setting')
 
-    form = CustomUserCreationForm
+    signup_form = CustomUserCreationForm(request.POST or None)
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -238,27 +238,26 @@ def signup(request):
                 messages.info(request, 'Email is Taken. Try another!')
                 return redirect('signup')
             else:
-                # create user
-                user = User.objects.create_user(
-                    username=username, email=email, password=password1)
-                user.save()
+                if signup_form.is_valid():
+                    # create user
+                    user = User.objects.create_user(
+                        username=username, email=email, password=password1)
+                    user.save()
 
-                # create new profile
-                model_user = User.objects.get(username=username)
-                new_profile = Profile.objects.create(
-                    user=model_user, id_user=model_user.id)
-                new_profile.save()
+                    # create new profile
+                    model_user = User.objects.get(username=username)
+                    new_profile = Profile.objects.create(
+                        user=model_user, id_user=model_user.id)
+                    new_profile.save()
 
-                # authenticated & login
-                user = authenticate(username=username, password=password1)
-                if user is not None:
-                    login(request, user)
-                    return redirect('setting')
+                    # authenticated & login
+                    user = authenticate(username=username, password=password1)
+                    if user is not None:
+                        login(request, user)
+                        return redirect('setting')
                 else:
                     messages.info(
-                        request, 'Something went wrong please try again')
-                    return redirect('login')
-
+                        request, "Oops, something went wrong, please try a new password that doesn't match your other personal information")
         else:
             messages.info(request, 'Password Not Match')
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'signup.html', {'signup_form': signup_form})
