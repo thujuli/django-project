@@ -186,7 +186,7 @@ def setting(request):
         return redirect('index')
 
     context = {
-        'form': form,
+        'profile_form': form,
         'user_profile': user_profile,
     }
     return render(request, 'setting.html', context)
