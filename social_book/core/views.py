@@ -4,8 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Profile, Post, LikePost, FollowCount
-from .forms import CustomUserCreationForm, ProfileForm, PostForm, SearchPeopleForm
-from django.contrib.auth.forms import AuthenticationForm
+from .forms import CustomUserCreationForm, ProfileForm, PostForm, SearchPeopleForm, UserLoginForm
 from itertools import chain
 
 # Create your views here.
@@ -203,7 +202,7 @@ def signin(request):
     if request.user.is_authenticated:
         return redirect('setting')
 
-    form = AuthenticationForm
+    form = UserLoginForm(request.POST or None)
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -216,7 +215,7 @@ def signin(request):
             messages.info(
                 request, 'You have entered an invalid username or password')
             return redirect('login')
-    return render(request, 'signin.html', {'form': form})
+    return render(request, 'signin.html', {'login_form': form})
 
 
 def signup(request):
