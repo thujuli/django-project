@@ -12,7 +12,9 @@ from itertools import chain
 
 @login_required(login_url='login')
 def index(request):
-    form_post = PostForm
+    user_object = User.objects.get(username=request.user.username)
+    user_profile = Profile.objects.get(user=user_object)
+    post_form = PostForm
     search_form = SearchPeopleForm
     user_following_list = []
     feed = []
@@ -31,8 +33,9 @@ def index(request):
     feed_list = list(chain(*feed))
 
     context = {
+        'user_profile': user_profile,
         'search_form': search_form,
-        'form_post': form_post,
+        'post_form': post_form,
         'user_post': feed_list
     }
     return render(request, 'index.html', context)

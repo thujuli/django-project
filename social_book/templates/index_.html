@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Social Book
+{% endblock title %}
+
+
+{% block content %}
+<div class="container" >
+    <div class="left-bar">
+        <div class="col">
+            {% for post in user_post %}
+            <a href="{{ post.image.url }}">
+                <img src="{{ post.image.url }}" style="width: 250px;" >
+            </a>
+            <p>{{ post.caption }}</p>
+            <p><a href="{% url 'like-post' %}?post_id={{post.id}}">Like!</a> | {{ post.total_likes }} People Likes | <a href="{{ post.image.url }}" download>Download</a></p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="right-bar">
+
+        <form action="{% url 'search' %}" method="post" enctype="multipart/form-data" style="border: 1px solid black;">
+            <h2>Search People</h2>
+            {% csrf_token %}
+            {{ search_form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+
+        <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data" style="border: 1px solid black;">
+            {% csrf_token %}
+            {{ form_post.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

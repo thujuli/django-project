@@ -17,6 +17,16 @@ class PostForm(ModelForm):
             'caption',
         )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['image'].widget.attrs.update(
+            {'class': 'button soft-warning small'})
+        self.fields['caption'].widget.attrs.update(
+            {
+                'class': 'shadow-none bg-gray-100',
+                'placeholder': self.fields['caption'].label
+            })
+
 
 class UserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
