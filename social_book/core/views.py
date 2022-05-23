@@ -43,6 +43,9 @@ def index(request):
 
 @login_required(login_url='login')
 def search(request):
+    user_object = User.objects.get(username=request.user.username)
+    user_profile = Profile.objects.get(user=user_object)
+    search_form = SearchPeopleForm
 
     if request.method == 'POST':
         search_user = request.POST.get('search')
@@ -59,7 +62,13 @@ def search(request):
 
         profile_list = list(chain(*profile))
 
-    return render(request, 'search.html', {'profile_list': profile_list})
+    context = {
+        'search_user': search_user,
+        'profile_list': profile_list,
+        'search_form': search_form,
+        'user_profile': user_profile,
+    }
+    return render(request, 'search.html', context)
 
 
 @login_required(login_url='login')

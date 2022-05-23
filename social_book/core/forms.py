@@ -6,7 +6,8 @@ from .models import Profile, Post
 
 
 class SearchPeopleForm(forms.Form):
-    search = forms.CharField(max_length=255)
+    search = forms.CharField(max_length=255,
+                             widget=forms.TextInput(attrs={'placeholder': 'Search for username..'}))
 
 
 class PostForm(ModelForm):
