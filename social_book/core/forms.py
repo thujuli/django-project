@@ -73,5 +73,6 @@ class ProfileForm(ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs.update(
                 {
-                    'class': 'shadow-none bg-gray-100', }
+                    'class': 'shadow-none bg-gray-100',
+                }
             )

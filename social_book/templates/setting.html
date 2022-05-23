@@ -51,6 +51,7 @@
                         </div>
                         {% for form in profile_form %}
                             <div class="col-span-2">
+                                {{ form.label }}
                                 {{ form }}
                             </div>
                         {% endfor %}
