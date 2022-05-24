@@ -1,2 +1,2 @@
 # django-project
-My Project using Framework Django
+My Project using Django Framework
