@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile, Post, LikePost, FollowCount
 from .forms import CustomUserCreationForm, ProfileForm, PostForm, SearchPeopleForm, UserLoginForm
 from itertools import chain
+import random
 
 # Create your views here.
 
@@ -32,11 +33,39 @@ def index(request):
     # list a objects
     feed_list = list(chain(*feed))
 
+    # new suggestions list start
+    all_users = User.objects.all()
+    user_following_all = []
+
+    for user in following_list:
+        user_list = User.objects.get(username=user.user)
+        user_following_all.append(user_list)
+
+    new_suggestion_list = [
+        x for x in all_users if (x not in user_following_all)]
+    current_user = User.objects.filter(username=request.user.username)
+    final_suggestions_list = [
+        x for x in new_suggestion_list if (x not in current_user)]
+    random.shuffle(final_suggestions_list)
+
+    profile_list = []
+    profile_list_all = []
+
+    for users in final_suggestions_list:
+        profile_list.append(users.id)
+
+    for ids in profile_list:
+        user = Profile.objects.filter(id_user=ids)
+        profile_list_all.append(user)
+
+    suggestions_profile_list = list(chain(*profile_list_all))
+
     context = {
         'user_profile': user_profile,
         'search_form': search_form,
         'post_form': post_form,
-        'user_post': feed_list
+        'user_post': feed_list,
+        'suggestions_profile_list': suggestions_profile_list[0:3],
     }
     return render(request, 'index.html', context)
 
